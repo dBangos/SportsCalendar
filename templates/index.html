@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<link href="{{ url_for('static',filename='styles/index.css') }}" rel="stylesheet" type="text/css">
+<script crossorigin="anonymous"
+        integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO"
+        src="https://unpkg.com/htmx.org@1.9.5"></script>
+
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+
+<head>
+    <title>Sports Calendar</title>
+</head>
+
+<body>
+
+<div class="desktop-display">
+    <div class="hero-banner">
+        <h1 class="hero-banner__title hero-banner__stroked-title">Sports Calendar</h1>
+    </div>
+
+    <div class="left_box">
+        {% for day in week %}
+        {% if loop.last %}
+        <div hx-get="/week/{{id}}/1" hx-swap="afterend" hx-trigger="intersect once">
+            <div class="day_box">
+                {% for event in day %}
+                {% if loop.first %}
+                <div style="position:relative; left:1%;">
+                    <h2><b>{{ event }}</b></h2>
+                </div>
+                <hr>
+                {% else %}
+                <div style="position:relative; left:3%;">
+                    <h3>
+                        <b>{{ event[1] }}</b>
+                        <img class="icons" src="{{event[2]}}">
+                        {{ event[0] }}
+                        <img class="icons" src="{{event[3]}}">
+                    </h3>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+        <div class="day_box">
+            {% for event in day %}
+            {% if loop.first %}
+            <div style="position:relative; left:1%;">
+                <h2><b>{{ event }}</b></h2>
+            </div>
+            <hr>
+            {% else %}
+            <div style="position:relative; left:3%;">
+                <h3>
+                    <b>{{ event[1] }}</b>
+                    <img class="icons" src="{{event[2]}}">
+                    {{ event[0] }}
+                    <img class="icons" src="{{event[3]}}">
+                </h3>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="right_box">
+
+
+        <button class="accordion"><i class="arrow"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change Timezone</button>
+        <div class="panel">
+            <p>
+            <form action="/change_timezone/" method="post">
+                <select name="timezone_select">
+                    <option disabled hidden selected value="">Select a timezone:</option>
+                    <option value="US/Samoa">(GMT-11:00) Midway Island, Samoa</option>
+                    <option value="US/Hawaii">(GMT-10:00) Hawaii</option>
+                    <option value="US/Alaska">(GMT-09:00) Alaska</option>
+                    <option value="Canada/Pacific">(GMT-08:00) Pacific Time (US & Canada)</option>
+                    <option value="America/Tijuana">(GMT-08:00) Tijuana, Baja California</option>
+                    <option value="US/Arizona">(GMT-07:00) Arizona</option>
+                    <option value="America/Chihuahua">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
+                    <option value="US/Mountain">(GMT-07:00) Mountain Time (US & Canada)</option>
+                    <option value="US/Central">(GMT-06:00) Central Time (US & Canada)</option>
+                    <option value="America/Monterrey">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
+                    <option value="Canada/Saskatchewan">(GMT-06:00) Saskatchewan</option>
+                    <option value="America/Bogota">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
+                    <option value="US/Eastern">(GMT-05:00) Eastern Time (US & Canada)</option>
+                    <option value="Canada/Atlantic">(GMT-04:00) Atlantic Time (Canada)</option>
+                    <option value="America/Caracas">(GMT-04:00) Caracas, La Paz</option>
+                    <option value="America/Manaus">(GMT-04:00) Manaus</option>
+                    <option value="America/Santiago">(GMT-04:00) Santiago</option>
+                    <option value="America/Buenos_Aires">(GMT-03:00) Buenos Aires, Georgetown</option>
+                    <option value="America/Montevideo">(GMT-03:00) Montevideo</option>
+                    <option value="Africa/Casablanca">(GMT+00:00) Casablanca, Monrovia, Reykjavik</option>
+                    <option value="Europe/Dublin">(GMT+00:00) Dublin, Edinburgh, Lisbon, London</option>
+                    <option value="Europe/Amsterdam">(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+                    </option>
+                    <option value="Europe/Belgrade">(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague
+                    </option>
+                    <option value="Europe/Brussels">(GMT+01:00) Brussels, Copenhagen, Madrid, Paris</option>
+                    <option value="Europe/Warsaw">(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb</option>
+                    <option value="Europe/Athens">(GMT+02:00) Athens, Bucharest</option>
+                    <option value="Europe/Helsinki">(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</option>
+                    <option value="Europe/Minsk">(GMT+02:00) Minsk</option>
+                    <option value="Asia/Kuwait">(GMT+03:00) Kuwait, Riyadh, Baghdad</option>
+                    <option value="Europe/Moscow">(GMT+03:00) Moscow, St. Petersburg, Volgograd</option>
+                    <option value="Africa/Nairobi">(GMT+03:00) Nairobi</option>
+                    <option value="Asia/Tbilisi">(GMT+03:00) Tbilisi</option>
+                    <option value="Asia/Tehran">(GMT+03:30) Tehran</option>
+                    <option value="Asia/Yerevan">(GMT+04:00) Yerevan</option>
+                    <option value="Asia/Kabul">(GMT+04:30) Kabul</option>
+                    <option value="Asia/Karachi">(GMT+05:00) Islamabad, Karachi, Tashkent</option>
+                    <option value="Asia/Kolkata">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
+                    <option value="Asia/Kathmandu">(GMT+05:45) Kathmandu</option>
+                    <option value="Asia/Dhaka">(GMT+06:00) Astana, Dhaka</option>
+                    <option value="Asia/Bangkok">(GMT+07:00) Bangkok, Hanoi, Jakarta</option>
+                    <option value="Asia/Hong_Kong">(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option>
+                    <option value="Asia/Kuala_Lumpur">(GMT+08:00) Kuala Lumpur, Singapore</option>
+                    <option value="Asia/Ulaanbaatar">(GMT+08:00) Irkutsk, Ulaan Bataar</option>
+                    <option value="Australia/Perth">(GMT+08:00) Perth</option>
+                    <option value="Asia/Taipei">(GMT+08:00) Taipei</option>
+                    <option value="Asia/Tokyo">(GMT+09:00) Tokyo, Osaka, Sapporo</option>
+                    <option value="Asia/Seoul">(GMT+09:00) Seoul</option>
+                    <option value="Australia/Adelaide">(GMT+09:30) Adelaide</option>
+                    <option value="Australia/Brisbane">(GMT+10:00) Brisbane</option>
+                    <option value="Australia/Canberra">(GMT+10:00) Canberra, Melbourne, Sydney</option>
+                    <option value="Pacific/Guam">(GMT+10:00) Guam, Port Moresby</option>
+                    <option value="Asia/Vladivostok">(GMT+10:00) Vladivostok</option>
+                    <option value="Asia/Magadan">(GMT+11:00) Magadan, Solomon Is., New Caledonia</option>
+                    <option value="Pacific/Auckland">(GMT+12:00) Auckland, Wellington</option>
+                    <option value="Pacific/Fiji">(GMT+12:00) Fiji, Kamchatka, Marshall Is.</option>
+                </select>
+                </p>
+                <p>
+                    <button name="changeTimezoneBtn" type="submit">Update</button>
+                </p>
+            </form>
+        </div>
+
+
+        <div>&nbsp;</div>
+        <button class="accordion"><i class="arrow"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Football Club</button>
+        <div class="panel">
+            <p>
+            <form action="/add_team/" method="post">
+                <p> Look up the football club on
+                    <a href="https://www.transfermarkt.com/">transfermarkt.com</a>
+                    and copy-paste the club's link below.
+                </p>
+                <p> For example: https://www.transfermarkt.com/aek-athen/startseite/verein/2441</p>
+                <p>Add a transfermarkt link: <input name="addTeam" type="url"/></p>
+                <button name="addTeamBtn" type="submit">Add Team</button>
+                </p>
+            </form>
+        </div>
+
+        <div>
+            <form action="/checkbox_selection/" method="post">
+                <p>
+                    {% for i in range(checkboxes|length) %}
+                    {% if checkboxes[i] in checked %}
+                    <input checked name={{checkboxes[i]}} type="checkbox">
+                    <label>{{checkboxes[i]}}</label><br>
+
+                    {% else %}
+                    <input name={{checkboxes[i]}} type="checkbox">
+                    <label>{{checkboxes[i]}}</label><br>
+                    {% endif %}
+                    {% endfor %}
+
+                </p>
+                <button name="checkboxBtn" type="submit">Update</button>
+            </form>
+        </div>
+        <form action="/reset_checkbox/" method="post">
+            <p>
+                <button name="resetBtn" type="submit">Reset</button>
+            </p>
+        </form>
+        <form action="/refresh/" method="post">
+            <p>
+                <button name="refreshBtn" type="submit">Refresh server data</button>
+            </p>
+        </form>
+    </div>
+</div>
+
+<div class="mobile-display">
+    <div class="hero-banner-mobile">
+        <h1 class="hero-banner__title_mobile hero-banner__stroked-title_mobile">Sports Calendar</h1>
+    </div>
+
+    <button class="accordion"><i class="arrow"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Change Timezone</button>
+    <div class="panel">
+        <p>
+        <form action="/change_timezone/" method="post">
+            <select name="timezone_select">
+                <option disabled hidden selected value="">Select a timezone:</option>
+                <option value="US/Samoa">(GMT-11:00) Midway Island, Samoa</option>
+                <option value="US/Hawaii">(GMT-10:00) Hawaii</option>
+                <option value="US/Alaska">(GMT-09:00) Alaska</option>
+                <option value="Canada/Pacific">(GMT-08:00) Pacific Time (US & Canada)</option>
+                <option value="America/Tijuana">(GMT-08:00) Tijuana, Baja California</option>
+                <option value="US/Arizona">(GMT-07:00) Arizona</option>
+                <option value="America/Chihuahua">(GMT-07:00) Chihuahua, La Paz, Mazatlan</option>
+                <option value="US/Mountain">(GMT-07:00) Mountain Time (US & Canada)</option>
+                <option value="US/Central">(GMT-06:00) Central Time (US & Canada)</option>
+                <option value="America/Monterrey">(GMT-06:00) Guadalajara, Mexico City, Monterrey</option>
+                <option value="Canada/Saskatchewan">(GMT-06:00) Saskatchewan</option>
+                <option value="America/Bogota">(GMT-05:00) Bogota, Lima, Quito, Rio Branco</option>
+                <option value="US/Eastern">(GMT-05:00) Eastern Time (US & Canada)</option>
+                <option value="Canada/Atlantic">(GMT-04:00) Atlantic Time (Canada)</option>
+                <option value="America/Caracas">(GMT-04:00) Caracas, La Paz</option>
+                <option value="America/Manaus">(GMT-04:00) Manaus</option>
+                <option value="America/Santiago">(GMT-04:00) Santiago</option>
+                <option value="America/Buenos_Aires">(GMT-03:00) Buenos Aires, Georgetown</option>
+                <option value="America/Montevideo">(GMT-03:00) Montevideo</option>
+                <option value="Africa/Casablanca">(GMT+00:00) Casablanca, Monrovia, Reykjavik</option>
+                <option value="Europe/Dublin">(GMT+00:00) Dublin, Edinburgh, Lisbon, London</option>
+                <option value="Europe/Amsterdam">(GMT+01:00) Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna
+                </option>
+                <option value="Europe/Belgrade">(GMT+01:00) Belgrade, Bratislava, Budapest, Ljubljana, Prague
+                </option>
+                <option value="Europe/Brussels">(GMT+01:00) Brussels, Copenhagen, Madrid, Paris</option>
+                <option value="Europe/Warsaw">(GMT+01:00) Sarajevo, Skopje, Warsaw, Zagreb</option>
+                <option value="Europe/Athens">(GMT+02:00) Athens, Bucharest</option>
+                <option value="Europe/Helsinki">(GMT+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius</option>
+                <option value="Europe/Minsk">(GMT+02:00) Minsk</option>
+                <option value="Asia/Kuwait">(GMT+03:00) Kuwait, Riyadh, Baghdad</option>
+                <option value="Europe/Moscow">(GMT+03:00) Moscow, St. Petersburg, Volgograd</option>
+                <option value="Africa/Nairobi">(GMT+03:00) Nairobi</option>
+                <option value="Asia/Tbilisi">(GMT+03:00) Tbilisi</option>
+                <option value="Asia/Tehran">(GMT+03:30) Tehran</option>
+                <option value="Asia/Yerevan">(GMT+04:00) Yerevan</option>
+                <option value="Asia/Kabul">(GMT+04:30) Kabul</option>
+                <option value="Asia/Karachi">(GMT+05:00) Islamabad, Karachi, Tashkent</option>
+                <option value="Asia/Kolkata">(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi</option>
+                <option value="Asia/Kathmandu">(GMT+05:45) Kathmandu</option>
+                <option value="Asia/Dhaka">(GMT+06:00) Astana, Dhaka</option>
+                <option value="Asia/Bangkok">(GMT+07:00) Bangkok, Hanoi, Jakarta</option>
+                <option value="Asia/Hong_Kong">(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi</option>
+                <option value="Asia/Kuala_Lumpur">(GMT+08:00) Kuala Lumpur, Singapore</option>
+                <option value="Asia/Ulaanbaatar">(GMT+08:00) Irkutsk, Ulaan Bataar</option>
+                <option value="Australia/Perth">(GMT+08:00) Perth</option>
+                <option value="Asia/Taipei">(GMT+08:00) Taipei</option>
+                <option value="Asia/Tokyo">(GMT+09:00) Tokyo, Osaka, Sapporo</option>
+                <option value="Asia/Seoul">(GMT+09:00) Seoul</option>
+                <option value="Australia/Adelaide">(GMT+09:30) Adelaide</option>
+                <option value="Australia/Brisbane">(GMT+10:00) Brisbane</option>
+                <option value="Australia/Canberra">(GMT+10:00) Canberra, Melbourne, Sydney</option>
+                <option value="Pacific/Guam">(GMT+10:00) Guam, Port Moresby</option>
+                <option value="Asia/Vladivostok">(GMT+10:00) Vladivostok</option>
+                <option value="Asia/Magadan">(GMT+11:00) Magadan, Solomon Is., New Caledonia</option>
+                <option value="Pacific/Auckland">(GMT+12:00) Auckland, Wellington</option>
+                <option value="Pacific/Fiji">(GMT+12:00) Fiji, Kamchatka, Marshall Is.</option>
+            </select>
+            </p>
+            <p>
+                <button name="changeTimezoneBtn" type="submit">Update</button>
+            </p>
+        </form>
+    </div>
+
+
+    <div>&nbsp;</div>
+    <button class="accordion"><i class="arrow"></i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add Football Club</button>
+    <div class="panel">
+        <p>
+        <form action="/add_team/" method="post">
+                <p> Look up the football club on
+                    <a href="https://www.transfermarkt.com/">transfermarkt.com</a>
+                    and copy-paste the club's link below.
+                </p>
+                <p> For example: https://www.transfermarkt.com/aek-athen/startseite/verein/2441</p>
+                <p>Add a transfermarkt link: <input name="addTeam" type="url"/></p>
+            <button name="addTeamBtn" type="submit">Add Team</button>
+            </p>
+        </form>
+    </div>
+
+
+    <div>
+        <form action="/checkbox_selection/" method="post">
+            <p>
+                {% for i in range(checkboxes|length) %}
+                {% if checkboxes[i] in checked %}
+                <input checked name={{checkboxes[i]}} type="checkbox">
+                <label>{{checkboxes[i]}}</label><br>
+
+                {% else %}
+                <input name={{checkboxes[i]}} type="checkbox">
+                <label>{{checkboxes[i]}}</label><br>
+                {% endif %}
+                {% endfor %}
+
+            </p>
+            <button name="checkboxBtn" type="submit">Update</button>
+        </form>
+    </div>
+    <form action="/reset_checkbox/" method="post">
+        <p>
+            <button name="resetBtn" type="submit">Reset</button>
+        </p>
+    </form>
+    <form action="/refresh/" method="post">
+        <p>
+            <button name="refreshBtn" type="submit">Refresh server data</button>
+        </p>
+    </form>
+
+    {% for day in week %}
+    {% if loop.last %}
+    <div hx-get="/week/{{id}}/1" hx-swap="afterend" hx-trigger="intersect once">
+        <div class="day_box_mobile">
+            {% for event in day %}
+            {% if loop.first %}
+            <div style="position:relative; left:1%;">
+                <h3><b>{{ event }}</b></h3>
+            </div>
+            <hr>
+            {% else %}
+            <div style="position:relative; left:3%;">
+                <p>
+                    <b>{{ event[1] }}</b>
+                    <img class="icons" src="{{event[2]}}">
+                    {{ event[0] }}
+                    <img class="icons" src="{{event[3]}}">
+                </p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="day_box_mobile">
+        {% for event in day %}
+        {% if loop.first %}
+        <div style="position:relative; left:1%;">
+            <h3><b>{{ event }}</b></h3>
+        </div>
+        <hr>
+        {% else %}
+        <div style="position:relative; left:3%;">
+            <p>
+                <b>{{ event[1] }}</b>
+                <img class="icons" src="{{event[2]}}">
+                {{ event[0] }}
+                <img class="icons" src="{{event[3]}}">
+            </p>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    /* Toggle between adding and removing the "active" class,
+    to highlight the button that controls the panel */
+    this.classList.toggle("active");
+
+    /* Toggle between hiding and showing the active panel */
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
+</body>
+</html>

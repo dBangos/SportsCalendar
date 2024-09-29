@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+
+<body>
+<div class="desktop-display">
+
+    {% for day in week %}
+    {% if loop.last %}
+    <div hx-get="/week/{{id}}/{{number}}" hx-swap="afterend" hx-trigger="intersect once">
+        <div class="day_box">
+            {% for event in day %}
+            {% if loop.first %}
+            <div style="position:relative; left:1%;">
+                <h2><b>{{ event }}</b></h2>
+            </div>
+            <hr>
+            {% else %}
+            <div style="position:relative; left:3%;">
+                <h3>
+                    <b>{{ event[1] }}</b>
+                    <img class="icons" src="{{event[2]}}">
+                    {{ event[0] }}
+                    <img class="icons" src="{{event[3]}}">
+                </h3>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="day_box">
+        {% for event in day %}
+        {% if loop.first %}
+        <div style="position:relative; left:1%;">
+            <h2><b>{{ event }}</b></h2>
+        </div>
+        <hr>
+        {% else %}
+        <div style="position:relative; left:3%;">
+            <h3>
+                <b>{{ event[1] }}</b>
+                <img class="icons" src="{{event[2]}}">
+                {{ event[0] }}
+                <img class="icons" src="{{event[3]}}">
+            </h3>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+
+<div class="mobile-display">
+    {% for day in week %}
+    {% if loop.last %}
+    <div hx-get="/week/{{id}}/{{number}}" hx-swap="afterend" hx-trigger="intersect once">
+        <div class="day_box_mobile">
+            {% for event in day %}
+            {% if loop.first %}
+            <div style="position:relative; left:1%;">
+                <h3><b>{{ event }}</b></h3>
+            </div>
+            <hr>
+            {% else %}
+            <div style="position:relative; left:3%;">
+                <p>
+                    <b>{{ event[1] }}</b>
+                    <img class="icons" src="{{event[2]}}">
+                    {{ event[0] }}
+                    <img class="icons" src="{{event[3]}}">
+                </p>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="day_box_mobile">
+        {% for event in day %}
+        {% if loop.first %}
+        <div style="position:relative; left:1%;">
+            <h3><b>{{ event }}</b></h3>
+        </div>
+        <hr>
+        {% else %}
+        <div style="position:relative; left:3%;">
+            <p>
+                <b>{{ event[1] }}</b>
+                <img class="icons" src="{{event[2]}}">
+                {{ event[0] }}
+                <img class="icons" src="{{event[3]}}">
+            </p>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endfor %}
+
+</div>
+
+</body>
+</html>
