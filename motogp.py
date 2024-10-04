@@ -34,16 +34,18 @@ def motogp():
     data = data[1:]
     timestamp_offset = 0
     for i in range(len(data)):
-        if len(data[i]) == 2 or data[i][2] == 'Postponed':  # Removing cancelled items and adjusting timestamps
-            data[i] = ""
+        if len(data[i]) == 4:
+            if len(timestamps)> i - timestamp_offset:
+                data[i][0] = "MotoGP " + data[i][0] + " " + data[i][1]
+                data[i][1] = datetime.fromtimestamp(int(timestamps[i-timestamp_offset]))
+                data[i].pop(2)
+                data[i].pop(2)
+        elif len(data[i][0]) > 40 or data[i][0]=='Race of Champions':
             timestamp_offset += 1
-        elif len(data[i]) == 3:  # Removing the extra rows/ race titles of the table
-            data[i] = ""  # Placeholder for the removal, not to mess up the loop index
+            data[i] = ""
         else:
-            data[i][0] = "MotoGP " + data[i][0] + " " + data[i][1]
-            data[i][1] = datetime.fromtimestamp(int(timestamps[i-timestamp_offset]))
-            data[i].pop(2)
-            data[i].pop(2)
+            data[i] = ""
+
     data = [i for i in data if i != '']  # Removing the extra rows/ race titles of the table
 
     # Adjusting the timezone ============================================

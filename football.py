@@ -73,5 +73,3 @@ def football(page):
         item[1] = timezone_aware.astimezone(ZoneInfo('Europe/Athens'))
 
     return matches, title
-
-print( football("https://www.transfermarkt.com/aek-athens/startseite/verein/2441/saison_id/2024"))
